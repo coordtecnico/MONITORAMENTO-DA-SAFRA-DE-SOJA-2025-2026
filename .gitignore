@@ -1,0 +1,7 @@
+# nunca versionar dados abertos, chaves ou bases
+_privado/
+*.xlsx
+*.xls
+*.pkl
+*.bin
+acessos.json
