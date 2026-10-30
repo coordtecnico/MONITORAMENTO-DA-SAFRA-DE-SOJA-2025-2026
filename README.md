@@ -1,6 +1,6 @@
-# Monitoramento da Soja · Safra 2025/2026
+# Monitoramento da Safra 2025/2026 · Soja e Milho 2ª Safra
 
-Painel do projeto SIGA-MS (Aprosoja/MS) sobre o monitoramento das lavouras de soja em Mato Grosso do Sul.
+Painéis do projeto SIGA-MS (Aprosoja/MS) sobre o monitoramento das lavouras de soja e de milho 2ª safra em Mato Grosso do Sul.
 
 **Acesse:** https://coordtecnico.github.io/MONITORAMENTO-DA-SAFRA-DE-SOJA-2025-2026/
 
