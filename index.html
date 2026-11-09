@@ -85,10 +85,11 @@
     #l-soja > span,#l-milho > span{max-width:none;}
   }
   /* ---------- painel aberto */
-  #quadro{position:fixed;inset:0;width:100%;height:100%;border:0;background:#fff;}
-  #voltar{position:fixed;left:12px;bottom:12px;z-index:6;border:0;border-radius:999px;background:var(--brand);color:#fff;padding:9px 14px;font:600 .82rem system-ui,sans-serif;
-          box-shadow:0 4px 16px rgba(0,0,0,.25);cursor:pointer;opacity:.88;}
-  #voltar:hover{opacity:1;}
+  #quadro{position:fixed;left:0;right:0;bottom:0;top:44px;width:100%;height:calc(100% - 44px);border:0;background:#fff;}
+  #voltar{position:fixed;left:0;right:0;top:0;height:44px;z-index:6;border:0;background:var(--brand);color:#fff;padding:0 16px;
+          font:600 .9rem system-ui,sans-serif;text-align:left;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.2);}
+  #voltar:hover{filter:brightness(1.12);}
+  #voltar:focus-visible{outline:3px solid #fff;outline-offset:-5px;}
 </style>
 </head>
 <body>
@@ -129,7 +130,7 @@
 </div>
 <div id="carregando" hidden role="status" aria-live="polite">Abrindo o painel…</div>
 <iframe id="quadro" title="Painel de monitoramento" hidden></iframe>
-<button type="button" id="voltar" hidden>← Trocar de painel</button>
+<button type="button" id="voltar" hidden>← Voltar à escolha do monitoramento</button>
 
 <script type="application/json" id="acessos">{"sal":"MHSkqb2lqjr9GssfIbZccg==","acessos":[["4RvgcQcN20yGsnRI","qQr8FrD7CXh4wE5WT0SXHpjCewDxl2RWA2JioY3PlpHnMjcVhROjXUk8hNkzt1AV"],["85zWknx7A/0BXpFD","vabXvW2Jw7yZNWTV1uf+G5v0/89spfyBqSr6WmPRTrkv3fvQJxCOQU3T7gfx8hie"]]}</script>
 <script>
@@ -184,6 +185,7 @@
       if(url) URL.revokeObjectURL(url);
       url = URL.createObjectURL(new Blob([cache[nome]], {type: "text/html;charset=utf-8"}));
       quadro.src = url; quadro.hidden = false; voltar.hidden = false; escolha.hidden = true;
+      try { history.pushState({painel: nome}, ""); } catch(err){}
       document.title = (nome === "soja" ? "Monitoramento da Soja" : "Monitoramento do Milho") + " · SIGA-MS";
       if(window.gtag) gtag("event", "abrir_painel", {painel: nome});
     } catch(err){
@@ -191,9 +193,12 @@
     } finally { carregando.hidden = true; }
   }
   document.querySelectorAll(".lado").forEach(function(b){ b.addEventListener("click", function(){ abre(b.dataset.p); }); });
-  voltar.addEventListener("click", function(){
+  function fecha(){
     quadro.hidden = true; quadro.removeAttribute("src"); voltar.hidden = true; escolha.hidden = false; document.title = "Monitoramento da Safra · SIGA-MS";
-  });
+  }
+  /* o botao e o "voltar" do navegador levam de volta a escolha, sem pedir a senha de novo */
+  voltar.addEventListener("click", function(){ if(history.state && history.state.painel) history.back(); else fecha(); });
+  window.addEventListener("popstate", function(){ if(!quadro.hidden) fecha(); });
   document.getElementById("sair").addEventListener("click", function(){ chave = null; cache = {}; location.reload(); });
 })();
 </script>
